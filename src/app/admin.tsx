@@ -17,7 +17,7 @@ export default function AdminScreen() {
         <Button title="Add Movie" onPress={() => router.push('/add-movie')} />
         <Button title="Edit Movie" onPress={() => {}} />
         <Button title="Delete Movie" onPress={() => {}} />
-        <Button title="View Movies" onPress={() => {}} />
+        <Button title="View Movies" onPress={() => router.push('/view-movies')} />
       </View>
       <Button title="Logout" onPress={handleLogout} />
     </View>

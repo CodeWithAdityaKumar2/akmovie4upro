@@ -9,6 +9,7 @@ export default function RootLayout() {
       <Stack.Screen name="login" options={{ title: 'Admin Login' }} />
       <Stack.Screen name="admin" options={{ title: 'Admin Dashboard' }} />
       <Stack.Screen name="add-movie" options={{ title: 'Add Movie' }} />
+      <Stack.Screen name="view-movies" options={{ title: 'View Movies' }} />
     </Stack>
   );
 }

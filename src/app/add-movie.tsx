@@ -4,7 +4,7 @@ import { View, Text, TextInput, Button, StyleSheet, FlatList, Image, Alert } fro
 import { db } from '../firebase'; // Adjust the path if necessary
 import { collection, addDoc } from "firebase/firestore"; 
 
-const TMDB_API_KEY = 'YOUR_TMDB_API_KEY'; // <-- IMPORTANT: Add your TMDB API key here
+const TMDB_API_KEY = 'fed65ec6f5d5d783142e768d6dd811e7'; // <-- IMPORTANT: Add your TMDB API key here
 
 export default function AddMovieScreen() {
   const [searchQuery, setSearchQuery] = useState('');

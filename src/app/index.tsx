@@ -1,15 +1,15 @@
 
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to the Movie Streaming App</Text>
-      <Link href="/login" asChild>
-        <Button title="Admin Login" />
-      </Link>
+      <Text style={styles.title}>Welcome to the Movie App</Text>
+      <Button title="Admin Login" onPress={() => router.push('/login')} />
     </View>
   );
 }
@@ -24,6 +24,5 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 16,
-    textAlign: 'center',
   },
 });
