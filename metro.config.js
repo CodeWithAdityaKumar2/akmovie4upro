@@ -3,23 +3,24 @@ const { getDefaultConfig } = require('expo/metro-config');
 
 const config = getDefaultConfig(__dirname);
 
+// Enhance the server middleware to add CORS headers
 config.server = {
   ...config.server,
-  rewriteRequestUrl: (url) => {
-    if (url.includes('&transform.routerRoot=') && url.startsWith('/node_modules/expo-router/entry.bundle')) {
-        const projectRoot = __dirname;
-        const routerRoot = url.split('&transform.routerRoot=')[1];
-        return url.replace(
-            '/node_modules/expo-router/entry.bundle',
-            `${projectRoot}/${routerRoot}/_layout`
-        );
-    }
-    return url;
-  },
-  // This is the important part
   enhanceMiddleware: (middleware) => {
     return (req, res, next) => {
+      // Set CORS headers
       res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+      // Respond to preflight requests
+      if (req.method === 'OPTIONS') {
+        res.writeHead(200);
+        res.end();
+        return;
+      }
+      
+      // Call the next middleware
       return middleware(req, res, next);
     };
   },
