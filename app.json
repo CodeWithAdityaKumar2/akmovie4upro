@@ -39,6 +39,7 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "main": "expo-router/entry"
   }
 }
