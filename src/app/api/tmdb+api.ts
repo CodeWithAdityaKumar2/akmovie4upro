@@ -1,28 +1,40 @@
 
-import { createApi } from 'expo-router/api';
+import { ExpoRequest, ExpoResponse } from 'expo-router/server';
 
 const TMDB_API_KEY = process.env.EXPO_PUBLIC_TMDB_API_KEY;
 
-export default createApi(async (req, res) => {
-  const { searchQuery } = req.query;
+export async function GET(request: ExpoRequest) {
+  const { searchParams } = new URL(request.url);
+  const searchQuery = searchParams.get('searchQuery');
 
   if (!searchQuery) {
-    return res.status(400).json({ message: 'Search query is required' });
+    return new Response(JSON.stringify({ message: 'Search query is required' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   try {
-    const response = await fetch(
+    const apiResponse = await fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${searchQuery}`
     );
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch from TMDB');
+    if (!apiResponse.ok) {
+      const errorText = await apiResponse.text();
+      console.error('TMDB API Error:', errorText);
+      return new Response(JSON.stringify({ message: 'Failed to fetch from TMDB' }), {
+        status: apiResponse.status,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    const data = await response.json();
-    res.status(200).json(data);
+    const data = await apiResponse.json();
+    return ExpoResponse.json(data);
   } catch (error) {
-    console.error('[TMDB API] Error:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error('[API Route] Error:', error);
+    return new Response(JSON.stringify({ message: 'Internal Server Error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
-});
+}
