@@ -4,8 +4,6 @@ import { View, Text, TextInput, Button, StyleSheet, FlatList, Image, Alert } fro
 import { db } from '../firebase'; // Adjust the path if necessary
 import { collection, addDoc } from "firebase/firestore"; 
 
-const TMDB_API_KEY = 'fed65ec6f5d5d783142e768d6dd811e7'; // <-- IMPORTANT: Add your TMDB API key here
-
 export default function AddMovieScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -15,9 +13,7 @@ export default function AddMovieScreen() {
   const handleSearch = async () => {
     if (!searchQuery) return;
     try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${searchQuery}`
-      );
+      const response = await fetch(`/api/tmdb?searchQuery=${encodeURIComponent(searchQuery)}`);
       const data = await response.json();
       setSearchResults(data.results);
     } catch (error) {
